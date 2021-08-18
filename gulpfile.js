@@ -5,8 +5,16 @@ const autoprefixer = require("autoprefixer");
 const cleanCSS = require("gulp-clean-css");
 const postcss = require("gulp-postcss");
 const browsersync = require("browser-sync");
-
+const jsonServer = require("gulp-json-srv");
+ 
+const server = jsonServer.create();
 const dist = "./docs";
+const database = "db.json";
+
+gulp.task("json", function(){
+  return gulp.src(database)
+      .pipe(server.pipe());
+});
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
@@ -120,4 +128,4 @@ gulp.task("prod", () => {
         .pipe(gulp.dest(dist + '/css'));
 });
 
-gulp.task("default", gulp.parallel("watch", "build"));
+gulp.task("default", gulp.parallel("watch", "build", "json"));
